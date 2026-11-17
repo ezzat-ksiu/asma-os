@@ -1,7 +1,18 @@
-﻿.venv/
+﻿# Python
+.venv/
 __pycache__/
-*.pyc
+*.py[cod]
 .pytest_cache/
-*.egg-info/
-.DS_Store
-*.pdf
+
+# Node & Build Artifacts
+node_modules/
+dist/
+.astro/
+apps/storefront/node_modules/
+apps/storefront/dist/
+apps/storefront/.astro/
+apps/founder-screen/node_modules/
+apps/founder-screen/dist/
+
+# Local PDF Output
+output/*.pdf

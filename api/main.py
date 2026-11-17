@@ -95,10 +95,13 @@ def initiate_payment(req: PaymentInitiateRequest):
             "last_name": req.last_name,
             "phone_number": req.phone_number
         }
-        res = paymob.create_payment_intention(
+        res = paymob.create_payment_intent(
             amount_cents=req.amount_cents,
             currency=req.currency,
-            billing_data=billing_data
+            payment_methods=[1234],
+            items=[],
+            billing_data=billing_data,
+            special_reference=f"REF-{os.urandom(4).hex()}"
         )
         return {"status": "success", "payment_data": res}
     except Exception as e:
@@ -109,7 +112,8 @@ async def paymob_callback(request: Request):
     try:
         payload = await request.json()
         paymob = PaymobAdapter()
-        is_valid = paymob.verify_hmac(payload)
+        supplied_hmac = request.headers.get("x-paymob-hmac", "")
+        is_valid = paymob.verify_callback_hmac(payload, supplied_hmac)
         return {"verified": is_valid, "received": True}
     except Exception as e:
         return {"verified": False, "error": str(e)}
