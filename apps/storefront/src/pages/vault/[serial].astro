@@ -1,0 +1,20 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+export const prerender = false;
+const serial = Astro.params.serial ?? '';
+const base = import.meta.env.ASMA_API_BASE_URL;
+let record = null;
+let issue = 'Vault record is unavailable. Please try again later.';
+if (base) {
+  try {
+    const response = await fetch(`${base.replace(/\/$/, '')}/v1/public/vault/${encodeURIComponent(serial)}`, { headers: { accept: 'application/json' } });
+    if (response.ok) { record = await response.json(); issue = ''; }
+    else if (response.status === 404) issue = 'No public record was found for this serial.';
+  } catch { /* Keep the public page available when the API is offline. */ }
+}
+---
+<SiteLayout title={`Edition ${serial} | ASMA-OS Vault`}>
+  <main class="shell" style="padding:70px 0;max-width:850px"><a href="/" style="color:#7bd9e3">← ASMA-OS</a><p style="color:#35c6d8;text-transform:uppercase;letter-spacing:.16em;font-size:12px;margin-top:52px">Public edition vault</p><h1 style="font-size:44px;margin:12px 0 32px">Edition {serial}</h1>
+    {record ? <section style="display:grid;gap:18px"><article style="padding:24px;border:1px solid #27384e;border-radius:10px;background:#0d1a2b"><h2>Edition record</h2><p>{record.title ?? 'Registered edition'}</p><dl><dt>Fingerprint</dt><dd style="overflow-wrap:anywhere;font-family:monospace">{record.fingerprint ?? 'Not published'}</dd><dt>Verification status</dt><dd>{record.verification_status ?? 'Unspecified'}</dd></dl></article><article style="padding:24px;border:1px solid #27384e;border-radius:10px;background:#0d1a2b"><h2>Audit certificate</h2><pre style="white-space:pre-wrap;overflow-wrap:anywhere">{JSON.stringify(record.audit_certificate ?? null, null, 2)}</pre></article></section> : <section style="padding:24px;border:1px solid #27384e;border-radius:10px;background:#0d1a2b;color:#a7b5c8"><p>{issue}</p>{!base && <p>Public vault API is not configured for this deployment.</p>}</section>}
+  </main>
+</SiteLayout>

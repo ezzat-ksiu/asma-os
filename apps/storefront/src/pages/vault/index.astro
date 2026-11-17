@@ -1,0 +1,6 @@
+---
+export const prerender = false;
+const serial = Astro.url.searchParams.get('serial')?.trim();
+if (!serial) return Astro.redirect('/#provenance', 302);
+return Astro.redirect(`/vault/${encodeURIComponent(serial)}`, 302);
+---
