@@ -1,15 +1,31 @@
-﻿{
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/main.py",
-      "use": "@vercel/python"
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "app": {
+      "root": ".",
+      "runtime": "python"
+    },
+    "founder-screen": {
+      "root": "apps/founder-screen",
+      "framework": "vite"
+    },
+    "storefront": {
+      "root": "apps/storefront",
+      "framework": "astro"
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "api/main.py"
+      "source": "/api/(.*)",
+      "destination": {
+        "service": "app"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "storefront"
+      }
     }
   ]
 }
