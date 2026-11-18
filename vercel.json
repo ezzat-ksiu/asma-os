@@ -3,7 +3,8 @@
   "services": {
     "app": {
       "root": ".",
-      "runtime": "python"
+      "runtime": "python",
+      "entrypoint": "api/main.py"
     },
     "founder-screen": {
       "root": "apps/founder-screen",
