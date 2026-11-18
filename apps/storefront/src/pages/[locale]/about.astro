@@ -1,0 +1,9 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+export const prerender = true;
+export function getStaticPaths() { return [{params:{locale:'en'}},{params:{locale:'ar'}}]; }
+const ar = Astro.params.locale === 'ar';
+---
+<BrandLayout locale={ar ? 'ar' : 'en'} title={ar ? 'عن فولياڤير' : 'About | FOLIAVERE'}>
+  <main id="main" class="fv-container fv-page"><p class="fv-eyebrow">{ar ? 'فلسفة التحرير' : 'EDITORIAL PHILOSOPHY'}</p><h1 class="fv-page-title">{ar ? 'حكايات إنسانية، وعملية إنتاج منضبطة.' : 'Human stories, carefully produced.'}</h1><div class="fv-prose">{ar ? <><p>فولياڤير مشروع نشر مخصص يقوم على التوجيه التحريري الدقيق والتقنية المنضبطة والإنتاج المطبوع. ASMA-OS هو نظام التشغيل الداخلي للدار وليس منتجاً مستقلاً للمستهلك.</p><p>تعتمد طريقتنا على الأدلة: لا ينتقل الكتاب إلى المرحلة التالية إلا بعد تسجيل الموجز والمعاينة والتكاليف والدفع وضوابط الخصوصية والموافقات المطلوبة.</p></> : <><p>FOLIAVERE is a bespoke-publishing concept built around careful editorial direction, measured technology and physical production. ASMA-OS is the internal operating system, not a separate consumer product.</p><p>Our method is evidence-gated: work advances only when the brief, proof, costs, payment, privacy controls and required approvals are recorded.</p></>}<h2>{ar ? 'مسؤولية بشرية' : 'Human accountability'}</h2><p>{ar ? 'قد تساعد التقنية في بعض مراحل الإعداد. تبقى موافقات الطباعة والنشر والإنفاق والقرارات القانونية للمسؤول البشري المخول.' : 'Technology may assist parts of preparation. Print dispatch, publication, spending and legal commitments remain with an authorised human decision-maker.'}</p></div></main>
+</BrandLayout>

@@ -22,3 +22,17 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Run test suite
         run: python -m pytest -v
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: |
+            apps/storefront/package-lock.json
+            apps/founder-screen/package-lock.json
+      - name: Build storefront
+        working-directory: apps/storefront
+        run: npm ci && npm run build
+      - name: Build founder console
+        working-directory: apps/founder-screen
+        run: npm ci && npm run build

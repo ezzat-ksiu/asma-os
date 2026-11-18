@@ -1,36 +1,11 @@
-﻿import urllib.request
-import json
-import uuid
+"""Explicitly gated provider test placeholder; local planner behavior is tested offline."""
+import os
+import pytest
 
-deepseek_key = "sk-8c3a7a8310f348c5b5c622f703569cae"
+pytestmark = pytest.mark.skipif(
+    os.getenv("ASMA_RUN_EXTERNAL_PROVIDER_TESTS") != "1" or not os.getenv("DEEPSEEK_API_KEY"),
+    reason="external provider checks require explicit opt-in and a configured key",
+)
 
-print("🤖 [ASMA-OS V6.0] Planning Agent Initialized with DeepSeek AI...")
-
-# 1. Ask DeepSeek Planning Agent to generate a 3-step execution plan for a customized book
-url = "https://api.deepseek.com/chat/completions"
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {deepseek_key}"
-}
-prompt = """Break down the creation of a personalized hardcover photo book into 3 short JSON execution steps.
-Format strictly as JSON list of strings: ["Step 1...", "Step 2...", "Step 3..."]"""
-
-payload = {
-    "model": "deepseek-chat",
-    "messages": [
-        {"role": "system", "content": "You are ASMA-OS Planning Agent. Respond strictly with valid JSON list."},
-        {"role": "user", "content": prompt}
-    ],
-    "temperature": 0.2
-}
-
-req = urllib.request.Request(url, data=json.dumps(payload).encode('utf-8'), headers=headers, method='POST')
-try:
-    with urllib.request.urlopen(req) as response:
-        res = json.loads(response.read().decode('utf-8'))
-        raw_plan = res['choices'][0]['message']['content']
-        print("\n✨ DeepSeek Generated Workflow Plan:")
-        print(raw_plan)
-        print("\n✅ LIVE INTEGRATED AGENT TASK EXECUTED SUCCESSFULLY!")
-except Exception as e:
-    print("\n❌ Task Execution Error:", e)
+def test_remote_planner_is_not_enabled_by_default():
+    pytest.skip("Remote planning is intentionally not part of the offline test suite.")

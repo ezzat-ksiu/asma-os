@@ -108,7 +108,10 @@ def test_retryable_agent_failure_is_retried_before_fallback():
     async def scenario():
         worker = FlakyExecutionAgent(node_id="flaky")
         orchestrator = AutonomousTaskOrchestrator(execution_agent=worker)
-        result = await orchestrator.ainvoke("task-retry", "retry a transient step")
+        result = await orchestrator.ainvoke(
+            "task-retry", "retry a transient step",
+            task_data={"plan_steps": ["retry this single step"]},
+        )
         assert result["status"] == "COMPLETED"
         assert worker.calls == 2
         assert result["fallback_attempts"] == {}

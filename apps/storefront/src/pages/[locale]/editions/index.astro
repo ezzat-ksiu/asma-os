@@ -1,0 +1,13 @@
+---
+import BrandLayout from '../../../layouts/BrandLayout.astro';
+export const prerender = true;
+import { editions } from '../../../content/catalog';
+export function getStaticPaths() { return [{ params: { locale: 'en' } }, { params: { locale: 'ar' } }]; }
+const { locale } = Astro.params;
+const ar = locale === 'ar';
+---
+<BrandLayout locale={locale} title={ar ? 'الإصدارات | فولياڤير' : 'Editions | FOLIAVERE'} description={ar ? 'نطاقات الإصدارات المطبوعة من فولياڤير.' : 'Compare the scoped FOLIAVERE editions.'}>
+  <main id="main" class="fv-container fv-page"><p class="fv-eyebrow">{ar ? 'نطاق العمل' : 'DEFINED SCOPE'}</p><h1 class="fv-page-title">{ar ? 'إصدارات محددة، بلا إضافات مفترضة.' : 'Defined editions, with no assumed extras.'}</h1><p class="fv-prose">{ar ? 'جميع الأسعار أدناه نقاط تخطيطية بالدولار وليست عرضاً للبيع. لا يتاح الدفع حتى التحقق من أهلية البائع ومواصفات المورد والتكلفة النهائية والمراجعة القانونية.' : 'All prices below are planning points in USD, not an offer to purchase. Checkout remains paused until seller eligibility, supplier specifications, landed costs and legal review are confirmed.'}</p>
+    <div class="fv-grid" style="margin-block-start:32px">{editions.map((edition) => <article class="fv-card"><span class="fv-tag">{edition.pages} {ar ? 'صفحة' : 'pages'}</span><h2>{edition.name}</h2><p>{ar ? edition.arSummary : edition.summary}</p><div class="fv-price">${edition.price}<small> USD · {ar ? 'سعر تخطيطي' : 'planning price'}</small></div><a href={`/${locale}/editions/${edition.id}`}>{ar ? 'تفاصيل النطاق ←' : 'Review the scope →'}</a></article>)}</div>
+  </main>
+</BrandLayout>

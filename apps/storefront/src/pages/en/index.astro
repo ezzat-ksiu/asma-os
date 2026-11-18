@@ -1,0 +1,23 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+import { editions, samples } from '../../content/catalog';
+---
+<BrandLayout title="FOLIAVERE — Stories, kept in a form worth keeping." description="Thoughtfully directed books made from the stories and ideas you choose to share. Reviewed before print.">
+  <main id="main">
+    <section class="fv-container fv-hero">
+      <div><p class="fv-eyebrow">FOLIAVERE · BESPOKE PUBLISHING</p><h1 class="fv-display">A story worth holding on to.</h1>
+        <p class="fv-lede">Thoughtfully directed books made from the memories, ideas and imaginative briefs you choose to share. Each commission is edited, proofed and prepared as a physical edition with a clear record of what was made.</p>
+        <div class="fv-actions"><a class="fv-button" href="/en/editions">Explore the editions</a><a class="fv-button-secondary" href="/en/portfolio">See the sample collection</a></div>
+        <p class="fv-proofline">Share only the information needed for a brief. Public verification is optional. Child photographs are outside the initial concept scope.</p>
+      </div>
+      <div class="fv-hero-art" role="img" aria-label="Illustrative digital book mockup; not a photographed print sample"><span class="fv-orbit" aria-hidden="true"></span><div class="fv-book-mockup"><small>FOLIAVERE · SAMPLE</small><strong>The Rooms<br/>We Carry</strong><span>A FICTIONAL EDITION</span></div><span class="fv-art-caption">Digital concept · not a photographed sample</span></div>
+    </section>
+    <section class="fv-section fv-section-soft" id="editions"><div class="fv-container"><div class="fv-section-heading"><div><p class="fv-eyebrow">THREE DEFINED SCOPES</p><h2>Choose the room your story needs.</h2></div><a class="fv-link" href="/en/editions">Compare all editions →</a></div>
+      <div class="fv-grid">{editions.map(edition => <article class="fv-card"><span class="fv-tag">{edition.pages} pages · planning price</span><h3>{edition.name}</h3><p>{edition.summary}</p><div class="fv-price">${edition.price}<small> USD · planning point, not an offer</small></div><a href={`/en/editions/${edition.id}`}>See scope and limits →</a></article>)}</div>
+    </div></section>
+    <section class="fv-section"><div class="fv-container"><div class="fv-section-heading"><div><p class="fv-eyebrow">THE FIRST FOLIOS COLLECTION</p><h2>Six fictional sample books.</h2></div><a class="fv-link" href="/en/portfolio">Explore the portfolio →</a></div><div class="fv-grid">{samples.slice(0,3).map((sample) => <article class="fv-card fv-book-card"><div class="fv-card-inner"><span class="fv-serial">{sample.serial} · PORTFOLIO DEMONSTRATION</span><div><h3>{sample.title}</h3><p>{sample.description}</p><a href={`/vault/${sample.serial}`}>View public record →</a></div></div></article>)}</div><p class="fv-copy">All six sample titles use fictional content and synthetic artwork. They are demonstrations, not customer orders or testimonials.</p></div></section>
+    <section class="fv-section fv-section-soft"><div class="fv-container"><div class="fv-section-heading"><div><p class="fv-eyebrow">A CLEAR PROCESS</p><h2>Human direction at each consequential step.</h2></div><a class="fv-link" href="/en/how-it-works">Read the full process →</a></div><div class="fv-process">{[['01','Choose','Set the audience, language and scope.'],['02','Brief','Share only the facts needed for the commission.'],['03','Review','Check names, text and the digital proof.'],['04','Approve','Printing waits for the required customer and founder approvals.']].map(([n,title,copy])=><article><b>{n}</b><h3>{title}</h3><p>{copy}</p></article>)}</div></div></section>
+    <section class="fv-container fv-section"><div class="fv-trust-panel"><div><p class="fv-eyebrow">TRUST BEFORE TECHNOLOGY</p><h2>Personal stories deserve careful handling.</h2></div><div><p>The initial service concept does not accept child photographs or create child face templates. Public vault display is optional and limited to metadata specifically approved for release.</p><a class="fv-button-secondary" href="/en/trust">Read the trust centre</a></div></div></section>
+    <section class="fv-section fv-section-soft"><div class="fv-container"><p class="fv-eyebrow">FOR HOSPITALITY & EDUCATION</p><h2>Start with one defined pilot.</h2><p class="fv-copy">A paid five-copy institutional pilot is a planning offer, subject to confirmed scope, seller eligibility, supplier quote and approval.</p><a class="fv-button" href="/en/for-hospitality">Explore institutional editions</a></div></section>
+  </main>
+</BrandLayout>

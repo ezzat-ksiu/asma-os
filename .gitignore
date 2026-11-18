@@ -4,6 +4,11 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 
+# Local secrets and environment-specific configuration
+.env
+.env.*
+!.env.example
+
 # Node & Build Artifacts
 node_modules/
 dist/
@@ -13,6 +18,7 @@ apps/storefront/dist/
 apps/storefront/.astro/
 apps/founder-screen/node_modules/
 apps/founder-screen/dist/
+*.tsbuildinfo
 
 # Local PDF Output
 output/*.pdf

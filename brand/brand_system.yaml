@@ -1,0 +1,206 @@
+# ملخص تنفيذي 1: هذا الملف هو مصدر الحقيقة القابل للقراءة آلياً لهوية FOLIAVERE المقترحة.
+# ملخص تنفيذي 2: الاسم ما زال قيد فحص العلامة التجارية والنطاقات ولا يمثل تسجيلاً قانونياً.
+# ملخص تنفيذي 3: ألوان الشاشة لا تحل محل ملفات ICC وعينات الطباعة الفعلية.
+# ملخص تنفيذي 4: لا يسمح النظام باستخدام صور الأطفال أو ملامحهم في التسويق العام.
+# ملخص تنفيذي 5: كل الأرقام المادية للتغليف تقديرية وتحتاج عروض موردين حية.
+brand_system_version: "1.0.0"
+brand:
+  name: "FOLIAVERE"
+  status: "working_name_pending_trademark_clearance"
+  descriptor: "Bespoke Publishing"
+  tagline_en: "Stories, kept in a form worth keeping."
+  tagline_ar: "حكايات تُصاغ لتبقى."
+  arabic_display_name: "فولياڤير"
+  internal_operating_system: "ASMA-OS"
+  positioning: "Human-directed bespoke publishing with structured, evidence-gated production."
+  prohibited_claims:
+    - "world's first"
+    - "world's best"
+    - "guaranteed perfect likeness"
+    - "guaranteed educational improvement"
+    - "100 percent autonomous"
+    - "99.9 percent availability unless independently measured"
+    - "zero retention unless supported by signed provider contract and configuration evidence"
+identity:
+  mark: "Two folio panels meeting around a central negative-space seam."
+  concept: "Story held between author and reader; editorial craft as the seam."
+  clear_space_ratio: 0.5
+  min_symbol_px: 12
+  min_symbol_print_mm: 5
+  min_wordmark_px: 110
+  min_wordmark_print_mm: 28
+  minimum_versions:
+    - "primary_wordmark"
+    - "symbol_only"
+    - "monochrome_dark"
+    - "monochrome_light"
+    - "foil_spot_vector"
+  forbidden_motifs:
+    - "AI circuit brain"
+    - "robot head"
+    - "crown"
+    - "generic quill"
+    - "magic sparkle cluster"
+colors:
+  ink:
+    hex: "#171713"
+    rgb: [23, 23, 19]
+    role: "primary_text_and_dark_surface"
+    contrast_on_ivory: "15.24:1"
+    approximate_cmyk: [0, 0, 17, 91]
+  ivory:
+    hex: "#F5EBDD"
+    rgb: [245, 235, 221]
+    role: "warm_paper_and_light_surface"
+    print_note: "Prefer naturally warm paper; do not simulate stock with heavy ink."
+  antique_gold:
+    hex: "#C7A76C"
+    rgb: [199, 167, 108]
+    role: "foil_accent_and_decorative_divider"
+    contrast_on_ink: "7.85:1"
+    contrast_on_ivory: "1.94:1"
+    approximate_cmyk: [0, 16, 46, 22]
+    restrictions: "Never use as normal text on Ivory. Metallic foil requires a separate printer process."
+  forest:
+    hex: "#343D38"
+    rgb: [52, 61, 56]
+    role: "secondary_dark_surface"
+    contrast_on_ivory: "9.52:1"
+    approximate_cmyk: [15, 0, 8, 76]
+  cocoa:
+    hex: "#765D4C"
+    rgb: [118, 93, 76]
+    role: "packaging_and_secondary_text"
+    contrast_on_ivory: "5.18:1"
+    approximate_cmyk: [0, 21, 36, 54]
+  bronze_text:
+    hex: "#75572D"
+    rgb: [117, 87, 45]
+    role: "accessible_warm_accent_text"
+    contrast_on_ivory: "5.64:1"
+  editorial_blue:
+    hex: "#2A5064"
+    rgb: [42, 80, 100]
+    role: "links_and_secondary_interaction"
+    contrast_on_ivory: "7.33:1"
+  white:
+    hex: "#FFFFFF"
+    rgb: [255, 255, 255]
+    role: "high_contrast_surface"
+    contrast_on_ink: "17.97:1"
+  print_profile_policy: "Use printer-supplied ICC profile and approved physical proof. HEX-to-CMYK values are directional only."
+typography:
+  latin_display:
+    family: "Playfair Display"
+    weights: [500, 600]
+    license: "Verify exact font package and OFL text before distribution."
+  latin_ui:
+    family: "Inter"
+    weights: [400, 500, 600, 700]
+    license: "Verify exact font package and OFL text before distribution."
+  arabic_editorial:
+    family: "Amiri"
+    weights: [400, 700]
+    license: "Verify exact font package and OFL text before distribution."
+  arabic_ui:
+    family: "IBM Plex Sans Arabic"
+    weights: [400, 500, 600, 700]
+    license: "Verify exact font package and OFL text before distribution."
+  metadata:
+    family: "IBM Plex Mono"
+    weights: [400, 500]
+    license: "Verify exact font package and OFL text before distribution."
+  hierarchy_px:
+    display: [40, 56]
+    h1: [36, 44]
+    h2: [28, 32]
+    h3: [20, 24]
+    body: [16, 18]
+    caption: [13, 14]
+  direction_rules:
+    arabic: "Set dir=rtl on content container; use logical CSS properties; isolate serials and URLs as LTR."
+    latin: "Set dir=ltr; maintain localised punctuation and diacritics."
+    mixed_script: "Regression-test Arabic with Latin words, numerals, parentheses and punctuation."
+grid:
+  desktop_max_width_px: 1200
+  editorial_text_column_px: [620, 720]
+  columns: {desktop: 12, tablet: 8, mobile: 4}
+  gutters_px: {desktop: 24, mobile: 16}
+  bleed: "Per printer SKU template; never hardcode a universal value."
+  safe_area: "Per printer SKU template and physical proof."
+illustration:
+  style_name: "Contemporary Literary Gouache"
+  medium: "Tactile gouache and coloured-pencil finish"
+  palette: ["#F5EBDD", "#171713", "#343D38", "#C7A76C", "#C98267", "#7893A1"]
+  lighting: "Natural directional light, gentle atmospheric shadow."
+  composition: "One focal action, readable silhouettes, quiet text-safe area, no critical details in gutter or trim."
+  character_philosophy:
+    - "Fictional and non-identifiable by default."
+    - "No child face embeddings or LoRA."
+    - "No stereotypes or exaggerated anatomy."
+    - "Character sheet records silhouette, wardrobe, palette and allowed variations."
+  prompt_suffix: "No text, no logo, no watermark, no photorealistic identifiable child, no unsafe props, no stereotypes, preserve print-safe negative space."
+cover:
+  title_hierarchy: ["title", "subtitle_if_approved", "imprint_mark"]
+  foil_layer: "Separate vector spot layer only when printer supports it."
+  spine_width: "Calculate from selected printer stock and page count."
+  back_cover: "Approved synopsis and legally required identifiers only; no fabricated endorsements."
+packaging:
+  base_kit:
+    - {item: "protective mailer", estimate_usd: "1.20"}
+    - {item: "paper tissue", estimate_usd: "0.35"}
+    - {item: "paper seal", estimate_usd: "0.15"}
+    - {item: "certificate card", estimate_usd: "0.35"}
+    - {item: "personal letter", estimate_usd: "0.25"}
+    - {item: "QR insert", estimate_usd: "0.10"}
+    - {item: "corner protection", estimate_usd: "0.60"}
+    - {item: "packing and handling allowance", estimate_usd: "2.00"}
+  base_packaging_estimate_usd: "5.00"
+  note: "All values are estimates; replace with supplier invoices and destination-specific packing tests."
+  scent_default: false
+certificates:
+  programme_name: "Folio Provenance Certificate"
+  serial_format: "AS-XXXXXXXX"
+  sample_serial_namespace: "AV-001 through AV-006"
+  fields:
+    - "edition_serial"
+    - "edition_title"
+    - "approved_artifact_sha256"
+    - "issue_manifest_version"
+    - "public_metadata_scope"
+  disclaimer: "Verifies an edition record and file fingerprint; does not certify copyright ownership or government registration."
+licensing:
+  default_personal: "personal_perpetual_license"
+  commercial_use: "separately scoped enterprise licence"
+  reused_components_disclosed: ["generic layout", "fonts", "non-identifying production components", "licensed model outputs subject to provider terms"]
+  copyright_policy: "Do not promise copyright in wholly AI-generated material; preserve actual human selection, arrangement and editing evidence."
+qa:
+  text_contrast_normal_minimum: "4.5:1"
+  text_contrast_large_minimum: "3:1"
+  focus_indicator_required: true
+  arabic_visual_regression_required: true
+  name_spelling_check_required: true
+  final_print_hash_approval_required: true
+  printer_preflight_required: true
+  physical_sample_required_before_public_quality_claim: true
+  child_marketing_likeness_allowed: false
+  child_face_embeddings_allowed: false
+  child_lora_allowed: false
+
+# Decision log: adopted design rules; legal and physical proof gates remain open.
+governance_decision_log:
+  - decision: "Keep FOLIAVERE as a working name only until formal trademark and domain clearance."
+    owner: "CEO and Chief Brand Officer"
+    why: "A preliminary search is not a legal clearance opinion."
+  - decision: "Use Ink and Ivory as the primary accessible editorial pair."
+    owner: "Chief Brand Officer and Accessibility Reviewer"
+    why: "High contrast supports legibility across light and print-preview contexts."
+  - decision: "Use Antique Gold as a decorative accent, not normal small text on Ivory."
+    owner: "Accessibility Reviewer"
+    why: "The documented contrast ratio is below WCAG text thresholds."
+  - decision: "Prohibit child likenesses, embeddings, and LoRA in public marketing assets."
+    owner: "Chief Legal and Compliance Officer"
+    why: "Privacy and safeguarding take precedence over promotional reuse."
+  - decision: "Treat packaging and CMYK values as estimates until printer samples and supplier invoices are accepted."
+    owner: "World Luxury Publishing Expert and CFO"
+    why: "Screen values and planning costs do not prove physical production results."

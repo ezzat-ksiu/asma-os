@@ -1,0 +1,24 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+export const prerender = true;
+export function getStaticPaths() { return [{params:{locale:'en'}},{params:{locale:'ar'}}]; }
+const ar = Astro.params.locale === 'ar';
+const faqs = ar ? [
+  ['هل كل كتاب فريد بالكامل؟','يُحدد كل إصدار وفق طلب العميل. قد نعيد استخدام التخطيطات العامة والخطوط والعناصر غير التعريفية؛ ولا نعد بأن كل كلمة أو أسلوب بصري لم يظهر سابقاً.'],
+  ['هل يمكن رفع صورة طفل؟','ليس في الإطلاق الأول. يعتمد المنتج الأول على التخصيص النصي والرسوم الخيالية.'],
+  ['هل الكتاب علاج أو برنامج علاجي؟','لا. قد تتضمن القصة محوراً للنقاش، لكنها ليست علاجاً أو تشخيصاً أو تدخلاً نمائياً مضمون النتائج.'],
+  ['متى يصل الكتاب؟','لا يمكن عرض مدة موثوقة قبل توفر عرض المورد للوجهة والمنتج المحددين.'],
+  ['هل الخزنة عامة؟','النشر العام اختياري ومحدود بالبيانات المنقحة التي وافق العميل على نشرها.'],
+  ['هل الدفع متاح؟','لا. صفحة الدفع في هذه المعاينة معطلة، ولا ينبغي إدخال أي بيانات مالية.'],
+] : [
+  ['Is every book completely unique?','Each commission is scoped to its buyer. Generic layouts, fonts and non-identifying components may be reused; we do not promise every word or visual technique has never appeared elsewhere.'],
+  ['Can I upload a child’s photo?','Not in the initial release. The first product uses text-led personalisation and fictional illustration.'],
+  ['Is the book educational therapy?','No. A story may include a discussion theme, but it is not therapy, diagnosis or a guaranteed developmental intervention.'],
+  ['When will it arrive?','A reliable estimate requires a live supplier quote for the selected product and destination.'],
+  ['Is the vault public?','Public display is optional and limited to approved, redacted metadata.'],
+  ['Can I pay for an edition?','No. Checkout is disabled in this preview; do not enter financial details.'],
+];
+---
+<BrandLayout locale={ar ? 'ar' : 'en'} title={ar ? 'الأسئلة الشائعة | فولياڤير' : 'FAQ | FOLIAVERE'}>
+  <main id="main" class="fv-container fv-page"><p class="fv-eyebrow">FAQ</p><h1 class="fv-page-title">{ar ? 'إجابات مباشرة.' : 'Clear answers.'}</h1><div class="fv-list-cards">{faqs.map(([question,answer])=><details class="fv-question"><summary>{question}</summary><p>{answer}</p></details>)}</div></main>
+</BrandLayout>

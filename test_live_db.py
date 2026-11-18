@@ -1,19 +1,11 @@
-﻿import urllib.request
-import json
+"""Explicitly gated database connectivity placeholder."""
+import os
+import pytest
 
-url = 'https://cazlpsbwjrgxscctfoqn.supabase.co/rest/v1/operational_gates?select=*'
-headers = {
-    'apikey': 'sb_publishable_ymPtWABOYRMsXyqXHv3tzQ_mDz95Tlc',
-    'Authorization': 'Bearer sb_publishable_ymPtWABOYRMsXyqXHv3tzQ_mDz95Tlc'
-}
+pytestmark = pytest.mark.skipif(
+    os.getenv("ASMA_RUN_EXTERNAL_PROVIDER_TESTS") != "1" or not os.getenv("SUPABASE_URL") or not os.getenv("SUPABASE_KEY"),
+    reason="live database checks require explicit opt-in and external credentials",
+)
 
-req = urllib.request.Request(url, headers=headers)
-try:
-    with urllib.request.urlopen(req) as response:
-        data = json.loads(response.read().decode('utf-8'))
-        print('🎉 LIVE SUPABASE DATA READ SUCCESSFUL!')
-        print(f'Retrieved {len(data)} operational gates from live database:')
-        for g in data:
-            print(f"  - [{g.get('gate_id')}] {g.get('name')}: {g.get('status')}")
-except Exception as e:
-    print('❌ Read Error:', e)
+def test_live_database_is_not_contacted_by_default():
+    pytest.skip("Use an isolated test project after explicitly approving external access.")

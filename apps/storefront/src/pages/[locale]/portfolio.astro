@@ -1,0 +1,13 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+export const prerender = true;
+import { samples } from '../../content/catalog';
+export function getStaticPaths() { return [{params:{locale:'en'}},{params:{locale:'ar'}}]; }
+const ar = Astro.params.locale === 'ar';
+---
+<BrandLayout locale={ar ? 'ar' : 'en'} title={ar ? 'مجموعة النماذج | فولياڤير' : 'Sample portfolio | FOLIAVERE'} description={ar ? 'ستة نماذج كتب خيالية لعرض اتجاهات النشر.' : 'Six fictional book demonstrations for the FOLIAVERE publishing direction.'}>
+  <main id="main" class="fv-container fv-page"><p class="fv-eyebrow">THE FIRST FOLIOS COLLECTION</p><h1 class="fv-page-title">{ar ? 'نماذج خيالية، بوضوح تام.' : 'Fictional samples, clearly identified.'}</h1><div class="fv-notice">{ar ? 'هذه النماذج الستة خيالية، ورسومها اصطناعية، وأرقامها AV-001 إلى AV-006 مراجع عرض فقط؛ وليست طلبات عملاء أو إثبات شراء أو شهادات إنتاج.' : 'These six works are fictional demonstrations with synthetic artwork. AV-001 through AV-006 are sample references, not customer orders, purchase evidence or proof of completed production.'}</div>
+    <div class="fv-grid" style="margin-block-start:26px">{samples.map((sample) => <article class="fv-card fv-book-card"><div class="fv-card-inner"><span class="fv-serial">{sample.serial} · {ar ? 'نموذج عرض' : 'PORTFOLIO DEMONSTRATION'}</span><div><span class="fv-tag">{sample.audience} · {sample.language}</span><h3 lang={sample.language.includes('Arabic') ? 'ar' : undefined}>{sample.title}</h3><p>{sample.description}</p><a href={`/vault/${sample.serial}`}>{ar ? 'ابحث عن سجل عام معتمد ←' : 'Check for an approved public record →'}</a></div></div></article>)}</div>
+    <section class="fv-section"><h2>{ar ? 'مثال كامل من 32 صفحة' : 'A full 32-page example'}</h2><p class="fv-copy">{ar ? 'يتضمن نموذج «حارسة مكتبة الضوء» نصاً مستقلاً واتجاهاً بصرياً لكل صفحة، وهو مثال تحريري خيالي.' : '“The Keeper of the Light Library” includes original page-by-page Arabic copy and illustration direction. It is a fictional editorial example.'}</p><a class="fv-button-secondary" href={ar ? '/ar/how-it-works' : '/en/how-it-works'}>{ar ? 'اعرف كيف نصمم النماذج' : 'See how sample concepts are developed'}</a></section>
+  </main>
+</BrandLayout>

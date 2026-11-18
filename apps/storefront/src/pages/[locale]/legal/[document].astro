@@ -1,0 +1,16 @@
+---
+import BrandLayout from '../../../layouts/BrandLayout.astro';
+export const prerender = true;
+export function getStaticPaths() {
+  return ['en', 'ar'].flatMap((locale) => ['privacy', 'terms'].map((document) => ({ params: { locale, document } })));
+}
+const { locale, document } = Astro.params;
+const ar = locale === 'ar';
+const title = document === 'privacy' ? (ar ? 'إشعار الخصوصية' : 'Privacy notice') : (ar ? 'شروط الاستخدام' : 'Terms of use');
+---
+<BrandLayout locale={locale} title={`${title} · FOLIAVERE`} noindex>
+  <main id="main" class="fv-container fv-page"><p class="fv-eyebrow">{ar ? 'مسودة غير معتمدة' : 'UNAPPROVED DRAFT'}</p><h1 class="fv-page-title">{title}</h1>
+    <div class="fv-notice">{ar ? 'هذه الصفحة ليست إشعاراً قانونياً نافذاً. يجب مراجعة النص النهائي من مستشار قانوني، واستكمال بيانات البائع والجهة المسؤولة وآليات التعامل مع البيانات قبل نشر الخدمة.' : 'This page is not an effective legal notice. Counsel must review final text, and seller identity, responsible entity, and actual data handling must be documented before the service is published.'}</div>
+    <p class="fv-prose">{ar ? 'لا ترسل بيانات شخصية أو معلومات دفع عبر هذه المعاينة. لم تُفتح خدمة الطلب أو الدفع.' : 'Do not submit personal or payment information through this preview. Ordering and payment are not open.'}</p>
+  </main>
+</BrandLayout>

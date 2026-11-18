@@ -6,10 +6,8 @@ import os
 import pytest
 from fastapi.testclient import TestClient
 from api.main import app
-from adapters.payments.paymob_adapter import PaymobAdapter
-from adapters.document_generator import TypstDocumentGenerator
 from agents.planning_agent import PlanningAgent
-from adapters.supabase_client import SupabaseClient
+from adapters.payments.paymob_adapter import PaymobAdapter
 
 def test_gate1_identity_and_branding():
     assert os.path.exists("brand") or os.path.exists("core")
@@ -56,21 +54,17 @@ def test_gate5_founder_command_os_api():
     client = TestClient(app)
     resp = client.get("/api/health")
     assert resp.status_code == 200
-    assert resp.json()["gates_operational"] == 6
+    assert resp.json()["gates_total"] == 7
 
     gates_resp = client.get("/api/gates")
     assert gates_resp.status_code == 200
-    assert len(gates_resp.json()["gates"]) >= 6
-    print("\n✅ Gate 5: Founder Command OS & Supabase Integration Verified!")
+    assert len(gates_resp.json()["gates"]) == 7
+    assert all(gate["status"] == "PENDING" for gate in gates_resp.json()["gates"])
 
-def test_gate6_ai_governance_and_document_generator():
+def test_gate6_local_planning_and_provider_boundaries():
     agent = PlanningAgent()
     plan = agent.generate_plan("Commercial Launch Gate 6 Test", 5000.0)
-    assert plan is not None
-
-    inv_path = TypstDocumentGenerator.generate_invoice(
-        {"client_name": "Gate 6 Test Client", "invoice_id": "INV-E2E-G6", "amount": 10000.0, "services": [{"name": "System Audit", "qty": 1, "price": 10000.0}]},
-        "output/invoices/test_e2e_g6.pdf"
-    )
-    assert os.path.exists(inv_path)
-    print("\n✅ Gate 6: DeepSeek AI Planning & Typst Document Engine Verified!")
+    assert plan["provider"] == "none"
+    assert len(plan["execution_steps"]) == 3
+    payment = TestClient(app).post("/api/payments/paymob/initiate", json={})
+    assert payment.status_code == 503

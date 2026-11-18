@@ -1,0 +1,14 @@
+export const editions = [
+  { id: 'heirloom', name: 'Heirloom', price: 199, pages: 32, summary: 'A guided illustrated edition for one clear idea, dedication or family-friendly story brief.', includes: ['Digital proof', 'One consolidated correction round', 'Standard hardcover specification selected from the approved printer catalogue', 'Edition certificate'], arSummary: 'إصدار مصوّر من 32 صفحة لفكرة أو إهداء أو حكاية عائلية محددة.', arIncludes: ['معاينة رقمية', 'جولة واحدة مجمعة للتصحيح', 'مواصفة غلاف مقوى من المنتجات التي تم اختبارها', 'شهادة إصدار'] },
+  { id: 'atelier', name: 'Atelier', price: 399, pages: 32, summary: 'A broader editorial direction, richer illustration plan and expanded proof review for a story with more context.', includes: ['Expanded editorial direction', 'Richer illustration plan', 'Consolidated revision and final proof', 'Print finish confirmed before payment'], arSummary: 'إصدار من 32 صفحة بتوجيه تحريري أوسع وخطة رسوم أغنى ومراجعة معاينة موسعة.', arIncludes: ['توجيه تحريري أوسع', 'خطة رسوم أغنى', 'مراجعة مجمعة ومعاينة نهائية', 'عرض التشطيب قبل الدفع'] },
+  { id: 'grand', name: 'Grand', price: 649, pages: 32, summary: 'The most comprehensive 32-page scope, with deeper planning, two proof rounds and a recorded edition provenance.', includes: ['Deeper editorial planning', 'Two consolidated proof rounds', 'Folio Provenance Certificate', 'Premium options quoted separately'], arSummary: 'النطاق الأكثر شمولاً ضمن إصدار من 32 صفحة، مع تخطيط أعمق وجولتي معاينة وسجل توثيق.', arIncludes: ['تخطيط تحريري أعمق', 'جولتا معاينة مجمعتان', 'شهادة توثيق الإصدار', 'تسعير الإضافات المميزة بشكل منفصل'] },
+];
+
+export const samples = [
+  { serial: 'AV-001', title: 'حارسة مكتبة الضوء', audience: 'Children 5–8', language: 'Arabic RTL', description: 'نور تجمع أسئلة الجيران وحكاياتهم في مكتبة صغيرة، وتتعلم الإصغاء والعمل معاً.' },
+  { serial: 'AV-002', title: 'The Map of Small Wonders', audience: 'Children 5–8', language: 'English', description: 'Theo notices overlooked details in the neighbourhood and learns to observe, ask and collaborate.' },
+  { serial: 'AV-003', title: 'Le Jardin des Histoires', audience: 'Children 5–8', language: 'French', description: 'Lina and her neighbours turn a courtyard into a shared story garden.' },
+  { serial: 'AV-004', title: 'The Rooms We Carry', audience: 'Adult illustrated novella sample', language: 'English', description: 'A fictional narrator traces memory through rooms, objects and family sayings.' },
+  { serial: 'AV-005', title: 'The Art of Welcome', audience: 'Hospitality sample', language: 'English', description: 'A fictional property story told through spaces, materials and guest-care rituals.' },
+  { serial: 'AV-006', title: 'بين ضفتين', audience: 'Family / intergenerational', language: 'Arabic + English', description: 'A fictional family builds a shared glossary across two languages.' },
+];

@@ -1,45 +1,47 @@
-﻿from pydantic import BaseModel, Field
-from typing import Dict, Any, List, Optional
-import os
-import json
-import urllib.request
+"""Deterministic offline planner; external model calls are intentionally opt-in elsewhere."""
+from typing import Any
+from pydantic import BaseModel, Field
+from agents.base_agent import BaseAgent
 
-class PlanningAgent(BaseModel):
+class PlanningAgent(BaseAgent):
     node_id: str = Field(default="planning_agent_node")
-    model_name: str = Field(default="deepseek-chat")
+    model_name: str = Field(default="local-deterministic")
+    capabilities: list[str] = Field(default_factory=lambda: ["PLAN_TASK"])
 
-    def generate_plan(self, goal: str, budget: float = 1000.0) -> Dict[str, Any]:
-        api_key = os.getenv("DEEPSEEK_API_KEY", "sk-8c3a7a8310f348c5b5c622f703569cae")
-        url = "https://api.deepseek.com/chat/completions"
-
-        prompt = f"""You are the Planning Agent for ASMA-OS V6.0.
-Goal: {goal}
-Budget: ${budget} EGP
-Return valid JSON only with keys: goal, budget, strategy, execution_steps."""
-
-        payload = {
-            "model": self.model_name,
-            "messages": [
-                {"role": "system", "content": "You are a strategic AI planning engine that outputs strict JSON."},
-                {"role": "user", "content": prompt}
-            ],
-            "response_format": {"type": "json_object"}
+    def generate_plan(self, goal: str, budget: float = 0.0) -> dict[str, Any]:
+        clean_goal = " ".join(goal.split())[:2000]
+        if not clean_goal:
+            raise ValueError("goal must not be empty")
+        return {
+            "goal": clean_goal,
+            "budget": budget,
+            "strategy": "Review requirements, prepare a reversible implementation, validate locally, and request approval for consequential actions.",
+            "execution_steps": ["Clarify and record acceptance criteria", "Implement within configured permissions", "Run local validation and report evidence"],
+            "provider": "none",
         }
 
-        req = urllib.request.Request(url, data=json.dumps(payload).encode('utf-8'), headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {api_key}"
-        })
-
-        try:
-            with urllib.request.urlopen(req, timeout=10) as resp:
-                res = json.loads(resp.read().decode('utf-8'))
-                content = res["choices"][0]["message"]["content"]
-                return json.loads(content)
-        except Exception as e:
-            return {
-                "goal": goal,
-                "budget": budget,
-                "strategy": "Fallback Autonomous Strategy for Gate 6",
-                "execution_steps": ["Initialize Gate 1-6", "Verify Paymob Gateway", "Deploy Storefront"]
-            }
+    async def plan(self, goal: str, task_data: dict[str, Any] | None = None) -> list[dict[str, Any]]:
+        """Build an ordered plan locally; callers may provide explicit steps for a task."""
+        if not self.initialized:
+            await self.initialize()
+        supplied = (task_data or {}).get("plan_steps")
+        if supplied is not None:
+            if not isinstance(supplied, list) or not supplied:
+                raise ValueError("plan_steps must be a non-empty list")
+            normalized: list[dict[str, Any]] = []
+            for index, item in enumerate(supplied, start=1):
+                if isinstance(item, str):
+                    normalized.append({"step_id": f"step-{index}", "description": item, "task_data": {"result": item}})
+                elif isinstance(item, dict):
+                    normalized.append({"step_id": str(item.get("step_id", f"step-{index}")), "description": str(item.get("description", f"Step {index}")), "task_data": dict(item.get("task_data", {})), **{key: value for key, value in item.items() if key not in {"step_id", "description", "task_data"}}})
+                else:
+                    raise TypeError("each plan step must be a string or object")
+            return normalized
+        goal = " ".join(goal.split())
+        if not goal:
+            raise ValueError("goal must not be empty")
+        return [
+            {"step_id": "step-1", "description": f"Prepare requirements for: {goal}", "task_data": {"result": "requirements prepared"}},
+            {"step_id": "step-2", "description": "Execute the approved local work", "task_data": {"result": "local work completed"}},
+            {"step_id": "step-3", "description": "Review and record the result", "task_data": {"result": "review complete"}},
+        ]

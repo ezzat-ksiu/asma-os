@@ -1,35 +1,24 @@
-﻿import os
-import urllib.request
+"""Small Supabase REST adapter with explicit configuration and no fabricated fallback data."""
 import json
-from typing import List, Dict, Any
+import os
+import urllib.request
+from typing import Any
 
 class SupabaseClient:
-    def __init__(self, url: str = None, key: str = None):
-        self.url = url or os.getenv("SUPABASE_URL", "https://cazlpsbwjrgxscctfoqn.supabase.co")
-        self.key = key or os.getenv("SUPABASE_PUBLISHABLE_KEY", "sb_publishable_ymPtWABOYRMsXyqXHv3tzQ_mDz95Tlc")
+    def __init__(self, url: str | None = None, key: str | None = None):
+        self.url = (url or os.getenv("SUPABASE_URL", "")).rstrip("/")
+        self.key = key or os.getenv("SUPABASE_KEY", "")
+        if bool(self.url) != bool(self.key):
+            raise ValueError("SUPABASE_URL and SUPABASE_KEY must be configured together")
 
-    def get_operational_gates(self) -> List[Dict[str, Any]]:
-        default_gates = [
-            {"gate_number": 1, "gate_name": "Autonomous Identity & Branding", "status": "active"},
-            {"gate_number": 2, "gate_name": "Product Storefront & Publishing", "status": "active"},
-            {"gate_number": 3, "gate_name": "Multi-Channel Distribution Engine", "status": "active"},
-            {"gate_number": 4, "gate_name": "Autonomous Operations & Treasury", "status": "active"},
-            {"gate_number": 5, "gate_name": "Real-time Founder Command OS", "status": "active"},
-            {"gate_number": 6, "gate_name": "Self-Healing AI Governance", "status": "active"}
-        ]
-        endpoint = f"{self.url}/rest/v1/operational_gates?select=*"
-        req = urllib.request.Request(endpoint, headers={
-            "apikey": self.key,
-            "Authorization": f"Bearer {self.key}",
-            "Content-Type": "application/json"
-        })
-        try:
-            with urllib.request.urlopen(req, timeout=5) as resp:
-                if resp.status == 200:
-                    data = json.loads(resp.read().decode('utf-8'))
-                    if data and len(data) >= 6:
-                        return data
-        except Exception:
-            pass
-
-        return default_gates
+    def get_operational_gates(self) -> list[dict[str, Any]]:
+        if not self.url or not self.key:
+            return []
+        request = urllib.request.Request(f"{self.url}/rest/v1/operational_gates?select=*", headers={"apikey": self.key, "Authorization": f"Bearer {self.key}", "Accept": "application/json"})
+        with urllib.request.urlopen(request, timeout=5) as response:
+            if response.status != 200:
+                raise RuntimeError("Supabase gate query failed")
+            data = json.loads(response.read().decode("utf-8"))
+        if not isinstance(data, list):
+            raise ValueError("Supabase returned an invalid gate collection")
+        return data

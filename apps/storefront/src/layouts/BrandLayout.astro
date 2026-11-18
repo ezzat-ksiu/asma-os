@@ -1,0 +1,48 @@
+---
+import '../styles/global.css';
+const { locale = 'en', title = 'FOLIAVERE — Bespoke Publishing', description = 'Thoughtfully directed books, reviewed before print.', noindex = false } = Astro.props;
+const arabic = locale === 'ar';
+const home = arabic ? '/ar' : '/en';
+---
+<!doctype html>
+<html lang={locale} dir={arabic ? 'rtl' : 'ltr'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#F5EBDD" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="alternate" hreflang="en" href="/en" />
+    <link rel="alternate" hreflang="ar" href="/ar" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="fv-skip" href="#main">{arabic ? 'انتقل إلى المحتوى' : 'Skip to content'}</a>
+    <header class="fv-site-header">
+      <div class="fv-container fv-header-inner">
+        <a class="fv-wordmark" href={home} aria-label="FOLIAVERE — home">
+          <span class="fv-mark" aria-hidden="true"><i></i><i></i></span>
+          <span class="fv-wordmark-text">FOLIAVERE</span>
+        </a>
+        <nav class="fv-main-nav" aria-label={arabic ? 'التنقل الرئيسي' : 'Main navigation'}>
+          {arabic ? <>
+            <a href="/ar/editions">الإصدارات</a><a href="/ar/how-it-works">كيف نعمل</a><a href="/ar/trust">الثقة والخصوصية</a><a href="/ar/for-hospitality">للمؤسسات</a>
+          </> : <>
+            <a href="/en/editions">Editions</a><a href="/en/how-it-works">How it works</a><a href="/en/trust">Trust</a><a href="/en/for-hospitality">For institutions</a>
+          </>}
+          <a class="fv-language" href={arabic ? '/en' : '/ar'} lang={arabic ? 'en' : 'ar'} dir={arabic ? 'ltr' : 'rtl'}>{arabic ? 'EN' : 'العربية'}</a>
+        </nav>
+      </div>
+    </header>
+    <slot />
+    <footer class="fv-footer">
+      <div class="fv-container fv-footer-inner">
+        <div><a class="fv-wordmark" href={home}><span class="fv-mark" aria-hidden="true"><i></i><i></i></span><span class="fv-wordmark-text">FOLIAVERE</span></a><p>{arabic ? 'حكايات تُصاغ لتبقى.' : 'Stories, kept in a form worth keeping.'}</p></div>
+        <nav class="fv-footer-links" aria-label={arabic ? 'روابط إضافية' : 'Additional links'}>
+          <a href={arabic ? '/ar/about' : '/en/about'}>{arabic ? 'عن الدار' : 'About'}</a><a href={arabic ? '/ar/faq' : '/en/faq'}>FAQ</a><a href={arabic ? '/ar/legal/privacy' : '/en/legal/privacy'}>{arabic ? 'مسودة الخصوصية' : 'Privacy draft'}</a><a href={arabic ? '/ar/legal/terms' : '/en/legal/terms'}>{arabic ? 'مسودة الشروط' : 'Terms draft'}</a>
+        </nav>
+        <small>{arabic ? 'اسم عمل مقترح، بانتظار الفحص القانوني.' : 'Working name, pending trademark clearance.'}</small>
+      </div>
+    </footer>
+  </body>
+</html>

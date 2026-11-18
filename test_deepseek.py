@@ -1,28 +1,11 @@
-﻿import urllib.request
-import json
+"""Opt-in connectivity check. Never sends provider traffic during normal pytest runs."""
+import os
+import pytest
 
-deepseek_key = "sk-8c3a7a8310f348c5b5c622f703569cae"
+pytestmark = pytest.mark.skipif(
+    os.getenv("ASMA_RUN_EXTERNAL_PROVIDER_TESTS") != "1" or not os.getenv("DEEPSEEK_API_KEY"),
+    reason="external provider checks require explicit opt-in and a configured key",
+)
 
-url = "https://api.deepseek.com/chat/completions"
-headers = {
-    "Content-Type": "application/json",
-    "Authorization": f"Bearer {deepseek_key}"
-}
-payload = {
-    "model": "deepseek-chat",
-    "messages": [
-        {"role": "system", "content": "You are the Core Planning Agent of ASMA-OS V6.0."},
-        {"role": "user", "content": "Confirm in one short sentence that ASMA-OS V6.0 DeepSeek integration is online and active."}
-    ],
-    "stream": False
-}
-
-req = urllib.request.Request(url, data=json.dumps(payload).encode('utf-8'), headers=headers, method='POST')
-try:
-    with urllib.request.urlopen(req) as response:
-        res = json.loads(response.read().decode('utf-8'))
-        answer = res['choices'][0]['message']['content']
-        print("\n🎉 LIVE DEEPSEEK AI CONNECTION SUCCESSFUL!")
-        print("DeepSeek Response:", answer)
-except Exception as e:
-    print("\n❌ DeepSeek Test Error:", e)
+def test_deepseek_connectivity_is_explicitly_opted_in():
+    pytest.skip("Use the provider's documented health check in a separately approved environment.")

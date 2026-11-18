@@ -1,0 +1,229 @@
+/*
+ملخص تنفيذي 1: هذه الرموز تنفذ نظام FOLIAVERE البصري للموقع وشاشة المؤسس.
+ملخص تنفيذي 2: القيم الأساسية هي الحبر الداكن والعاجي والذهبي الزخرفي.
+ملخص تنفيذي 3: خصائص CSS المنطقية تدعم العربية RTL والإنجليزية والفرنسية LTR.
+ملخص تنفيذي 4: التباين والتركيز المرئي والحركة المخفضة مضمّنة كقواعد تصميم.
+ملخص تنفيذي 5: يجب اختبار الواجهة الفعلية بقارئ شاشة ولوحة مفاتيح قبل إعلان الامتثال.
+*/
+/* FOLIAVERE design tokens — drop-in base for Astro storefront and React founder screen.
+   Brand name remains subject to trademark clearance. WCAG contrast is pair-specific;
+   validate every component state and actual rendered font size before release. */
+
+:root {
+  color-scheme: light;
+  --fv-color-ink: #171713;
+  --fv-color-ivory: #F5EBDD;
+  --fv-color-gold: #C7A76C;
+  --fv-color-forest: #343D38;
+  --fv-color-cocoa: #765D4C;
+  --fv-color-bronze-text: #75572D;
+  --fv-color-editorial-blue: #2A5064;
+  --fv-color-white: #FFFFFF;
+  --fv-color-danger: #8A2F2F;
+  --fv-color-success: #285B45;
+  --fv-color-warning: #76510F;
+
+  --fv-bg: var(--fv-color-ivory);
+  --fv-surface: #FFFCF7;
+  --fv-surface-raised: var(--fv-color-white);
+  --fv-text: var(--fv-color-ink);
+  --fv-text-muted: #514D45;
+  --fv-border: #D9CDBB;
+  --fv-link: var(--fv-color-editorial-blue);
+  --fv-accent: var(--fv-color-gold);
+  --fv-focus: var(--fv-color-editorial-blue);
+
+  --fv-font-display: "Playfair Display", Georgia, serif;
+  --fv-font-body: "Inter", Arial, sans-serif;
+  --fv-font-arabic-display: "Amiri", "Noto Naskh Arabic", serif;
+  --fv-font-arabic-ui: "IBM Plex Sans Arabic", "Noto Sans Arabic", sans-serif;
+  --fv-font-mono: "IBM Plex Mono", Consolas, monospace;
+
+  --fv-text-xs: 0.8125rem;
+  --fv-text-sm: 0.875rem;
+  --fv-text-base: 1rem;
+  --fv-text-lg: 1.125rem;
+  --fv-text-xl: 1.25rem;
+  --fv-text-2xl: 1.75rem;
+  --fv-text-3xl: 2.25rem;
+  --fv-text-display: clamp(2.5rem, 5vw, 3.5rem);
+  --fv-leading-tight: 1.12;
+  --fv-leading-heading: 1.25;
+  --fv-leading-body: 1.7;
+  --fv-leading-arabic: 1.9;
+
+  --fv-space-1: 0.25rem;
+  --fv-space-2: 0.5rem;
+  --fv-space-3: 0.75rem;
+  --fv-space-4: 1rem;
+  --fv-space-5: 1.25rem;
+  --fv-space-6: 1.5rem;
+  --fv-space-8: 2rem;
+  --fv-space-10: 2.5rem;
+  --fv-space-12: 3rem;
+  --fv-space-16: 4rem;
+  --fv-space-20: 5rem;
+
+  --fv-radius-sm: 0.25rem;
+  --fv-radius-md: 0.5rem;
+  --fv-radius-lg: 0.875rem;
+  --fv-radius-xl: 1.25rem;
+  --fv-radius-pill: 999px;
+
+  --fv-shadow-sm: 0 1px 3px rgb(23 23 19 / 8%);
+  --fv-shadow-md: 0 8px 24px rgb(23 23 19 / 10%);
+  --fv-shadow-lg: 0 18px 48px rgb(23 23 19 / 14%);
+
+  --fv-content-width: 75rem;
+  --fv-reading-width: 44rem;
+  --fv-focus-ring: 0 0 0 3px rgb(42 80 100 / 28%);
+  --fv-transition-fast: 160ms ease-out;
+  --fv-transition-normal: 280ms ease-out;
+}
+
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  color-scheme: dark;
+  --fv-bg: #171713;
+  --fv-surface: #22231F;
+  --fv-surface-raised: #2B2D27;
+  --fv-text: #F5EBDD;
+  --fv-text-muted: #D6CBB9;
+  --fv-border: #5D594F;
+  --fv-link: #B8D4E2;
+  --fv-accent: #C7A76C;
+  --fv-focus: #B8D4E2;
+  --fv-focus-ring: 0 0 0 3px rgb(184 212 226 / 30%);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  background: var(--fv-bg);
+  color: var(--fv-text);
+  font-family: var(--fv-font-body);
+  font-size: 100%;
+  line-height: var(--fv-leading-body);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  min-inline-size: 20rem;
+  background: var(--fv-bg);
+  color: var(--fv-text);
+}
+
+:lang(ar) {
+  font-family: var(--fv-font-arabic-ui);
+  line-height: var(--fv-leading-arabic);
+}
+
+:lang(ar) h1,
+:lang(ar) h2,
+:lang(ar) .fv-display {
+  font-family: var(--fv-font-arabic-display);
+  font-weight: 700;
+}
+
+:lang(en) h1,
+:lang(en) h2,
+:lang(fr) h1,
+:lang(fr) h2,
+.fv-display {
+  font-family: var(--fv-font-display);
+  line-height: var(--fv-leading-tight);
+  letter-spacing: -0.025em;
+}
+
+.fv-container {
+  inline-size: min(calc(100% - 2 * var(--fv-space-6)), var(--fv-content-width));
+  margin-inline: auto;
+}
+
+.fv-reading {
+  max-inline-size: var(--fv-reading-width);
+  margin-inline: auto;
+}
+
+.fv-surface {
+  background: var(--fv-surface);
+  color: var(--fv-text);
+  border: 1px solid var(--fv-border);
+  border-radius: var(--fv-radius-lg);
+  box-shadow: var(--fv-shadow-sm);
+}
+
+.fv-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--fv-space-2);
+  min-block-size: 2.75rem;
+  padding-block: 0.7rem;
+  padding-inline: 1.1rem;
+  border: 1px solid transparent;
+  border-radius: var(--fv-radius-md);
+  background: var(--fv-color-ink);
+  color: var(--fv-color-ivory);
+  font: 600 var(--fv-text-sm) / 1.2 var(--fv-font-body);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--fv-transition-fast), transform var(--fv-transition-fast), box-shadow var(--fv-transition-fast);
+}
+
+.fv-button:hover { background: var(--fv-color-forest); }
+.fv-button:active { transform: translateY(1px); }
+.fv-button:focus-visible { outline: 0; box-shadow: var(--fv-focus-ring); }
+.fv-button[disabled], .fv-button[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
+
+.fv-link {
+  color: var(--fv-link);
+  text-decoration-thickness: 0.08em;
+  text-underline-offset: 0.18em;
+}
+.fv-link:focus-visible { outline: 2px solid var(--fv-focus); outline-offset: 3px; }
+
+.fv-input {
+  inline-size: 100%;
+  min-block-size: 2.75rem;
+  padding-block: 0.65rem;
+  padding-inline: 0.85rem;
+  border: 1px solid var(--fv-border);
+  border-radius: var(--fv-radius-md);
+  background: var(--fv-surface-raised);
+  color: var(--fv-text);
+  font: inherit;
+}
+.fv-input:focus-visible { outline: 0; border-color: var(--fv-focus); box-shadow: var(--fv-focus-ring); }
+
+.fv-muted { color: var(--fv-text-muted); }
+.fv-serial { font-family: var(--fv-font-mono); font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+.fv-gold-rule { inline-size: 3.5rem; block-size: 2px; background: var(--fv-color-gold); border: 0; }
+
+/* Use logical properties to support Arabic without mirroring the logo or serials. */
+.fv-card { padding-block: var(--fv-space-6); padding-inline: var(--fv-space-6); }
+.fv-inline-start { margin-inline-start: auto; }
+.fv-inline-end { margin-inline-end: auto; }
+.fv-text-start { text-align: start; }
+.fv-text-end { text-align: end; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* Decision Log
+- Adopt logical CSS properties for RTL/LTR: reduces duplicated direction-specific styling.
+- Keep Antique Gold decorative on Ivory: its text contrast is insufficient for body text.
+- Preserve visible focus and reduced-motion support: accessibility is part of the interface contract.
+- Do not claim WCAG conformance from tokens alone: complete-page testing is required.
+*/
