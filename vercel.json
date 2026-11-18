@@ -1,32 +1,19 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "services": {
-    "app": {
-      "root": ".",
-      "runtime": "python",
-      "entrypoint": "api/main.py"
-    },
-    "founder-screen": {
-      "root": "apps/founder-screen",
-      "framework": "vite"
-    },
-    "storefront": {
-      "root": "apps/storefront",
-      "framework": "astro"
+  "version": 2,
+  "builds": [
+    {
+      "src": "api/main.py",
+      "use": "@vercel/python"
     }
-  },
-  "rewrites": [
+  ],
+  "routes": [
     {
-      "source": "/api/(.*)",
-      "destination": {
-        "service": "app"
-      }
+      "src": "/api/(.*)",
+      "dest": "api/main.py"
     },
     {
-      "source": "/(.*)",
-      "destination": {
-        "service": "storefront"
-      }
+      "src": "/(.*)",
+      "dest": "api/main.py"
     }
   ]
 }
