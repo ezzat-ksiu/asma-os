@@ -1,0 +1,45 @@
+---
+const { title = "LUMEYRA (??????) — ??? ???????? ????????? ???????? ???????" } = Astro.props;
+---
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <style>
+      body {
+        background-color: #171713;
+        color: #F5EBDD;
+        font-family: 'Amiri', serif;
+        margin: 0;
+        padding: 0;
+      }
+      .header {
+        background-color: #343D38;
+        padding: 25px;
+        text-align: center;
+        border-bottom: 2px solid #C7A76C;
+      }
+      .brand-title {
+        color: #C7A76C;
+        font-size: 3rem;
+        margin: 0;
+        letter-spacing: 3px;
+      }
+      .container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">
+      <h1 class="brand-title">LUMEYRA</h1>
+    </div>
+    <div class="container">
+      <slot />
+    </div>
+  </body>
+</html>
