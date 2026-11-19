@@ -5,10 +5,13 @@ from __future__ import annotations
 import os
 from typing import Any
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from fastapi.middleware.cors import CORSMiddleware
 
 from spec_schema import ASMASpec, GateStatus
+from adapters.identity.auth0_verifier import Auth0Verifier
+from core.auth import AuthenticationNotConfigured, AuthenticationRejected, authorize_founder_token
 
 
 app = FastAPI(
@@ -42,6 +45,7 @@ if allowed_origins:
 # Gate status is deliberately not inferred from scaffold presence or test count.
 # A gate remains PENDING until an evidence-backed evaluator is connected.
 _spec = ASMASpec()
+_bearer = HTTPBearer(auto_error=False)
 
 
 def _gate_payload() -> list[dict[str, Any]]:
@@ -87,6 +91,38 @@ def health_check() -> dict[str, Any]:
 @app.get("/api/gates")
 def get_gates() -> dict[str, Any]:
     return {"gates": _gate_payload()}
+
+
+def require_founder_identity(
+    credentials: HTTPAuthorizationCredentials | None = Depends(_bearer),
+) -> dict[str, str]:
+    allowed_subjects = [
+        item.strip()
+        for item in os.getenv("ASMA_FOUNDER_SUBJECTS", "").split(",")
+        if item.strip()
+    ]
+    if not os.getenv("AUTH0_DOMAIN") or not os.getenv("AUTH0_AUDIENCE") or not allowed_subjects:
+        raise HTTPException(status_code=503, detail="Founder authentication is not configured")
+    if credentials is None or credentials.scheme.lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Bearer authentication required", headers={"WWW-Authenticate": "Bearer"})
+    try:
+        return authorize_founder_token(credentials.credentials, Auth0Verifier(), allowed_subjects)
+    except AuthenticationNotConfigured:
+        raise HTTPException(status_code=503, detail="Founder authentication is not configured") from None
+    except AuthenticationRejected:
+        raise HTTPException(status_code=401, detail="Founder authentication failed", headers={"WWW-Authenticate": "Bearer"}) from None
+
+
+@app.get("/api/founder/summary")
+def founder_summary(identity: dict[str, str] = Depends(require_founder_identity)) -> dict[str, Any]:
+    """Authenticated founder surface; business data remains absent until persisted."""
+    return {
+        "subject": identity["subject"],
+        "data_status": "NOT_CONFIGURED",
+        "print_approvals": "NOT_CONFIGURED",
+        "financial_ledger": "NOT_CONFIGURED",
+        "sla_measurements": "NOT_CONFIGURED",
+    }
 
 
 @app.post("/api/payments/paymob/initiate", status_code=503)

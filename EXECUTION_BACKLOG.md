@@ -4,7 +4,7 @@
 |---|---|---|---|
 | P0 | Unsupported healthy/PASSED claims | Engineering | **Done in this branch:** API defaults to UNKNOWN/PENDING without evidence; tests pass |
 | P0 | Historical `.env` exposure | Founder / security | Privately identify affected providers, rotate any real credentials, coordinate history cleanup |
-| P0 | Secure API and founder actions | Backend/security | Implement Auth0 JWT verification and role authorization before any private/business route |
+| P0 | Secure API and founder actions | Backend/security | **Foundation done:** Auth0 RS256 + exact founder subject allowlist on founder summary. Add full role/tenant auth and negative integration tests before exposing operations |
 | P0 | UTF-8 defects | Frontend | README and active founder HTML corrected; scan all active source/assets and rendered Arabic |
 | P1 | Bilingual customer site | Frontend/content | **Concept routes implemented**; still needs full approved catalog, copy review, accessibility and product content |
 | P1 | Deployment routing | DevOps | Resolve Vercel API catch-all vs Cloudflare static hosting; staging acceptance, no deploy without approval |

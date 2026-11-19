@@ -13,11 +13,11 @@
 
 | Date | Command / check | Result |
 |---|---|---|
-| 2026-11-19 | `.venv\Scripts\python.exe -B -m pytest -p no:cacheprovider -v` | **94 passed, 3 skipped** (97 collected, 2.19s); full suite exited 0 |
+| 2026-11-19 | `.venv\Scripts\python.exe -B -m pytest -p no:cacheprovider -v` | **97 passed, 3 skipped** (100 collected, 2.96s); full suite exited 0 |
 | 2026-11-19 | Storefront `npm run build` | **Passed**; Astro built 21 static pages including Arabic/English concept routes |
 | 2026-11-19 | Founder console `npm run build` | **Passed**; Vite production build completed |
-| 2026-11-19 | Branch API regressions | Covered by full suite; health/gates pending, payment/invoice fail-closed, CORS default deny |
-| 2026-11-19 | Python AST with UTF-8-SIG | 60 files parsed, 0 syntax errors |
+| 2026-11-19 | Branch API regressions | Covered by full suite; health/gates pending, founder summary guarded, payment/invoice fail-closed, CORS default deny |
+| 2026-11-19 | Python AST with UTF-8-SIG | 61 files parsed, 0 syntax errors |
 
 The Typst test generated a tracked demonstration PDF during execution. Its bytes were restored from branch `HEAD` in a `finally` block after each full run. The frontend build touched a tracked generated `dist/index.html`; it is restored to the branch baseline after build verification.
 

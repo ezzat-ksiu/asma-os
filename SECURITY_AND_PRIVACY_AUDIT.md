@@ -7,7 +7,7 @@
 | Historical tracked `.env` | Critical if values were real | Git history includes `.env` before deletion at `5378e73a`; current file ignored | Owner reviews secret categories privately, rotates any live credentials, then plans history cleanup; verify with secret scanner |
 | False gate/health claims | High | Old `api/main.py` returned all PASSED and healthy statically | Branch replaces with PENDING/UNKNOWN and tests for no evidence |
 | Wildcard credentialed CORS | High | Old API allowed `*` origins with credentials | Branch defaults to no CORS origins and accepts explicit allowlist only; test preflight |
-| API unauthenticated | High | No Auth0 dependency/middleware on active API | Add JWT issuer/audience/signature validation and role authorization before founder/tenant endpoints |
+| API has public read-only health/gates | Medium | `/api/health` and `/api/gates` intentionally expose non-customer status; no tenant CRUD exists | Keep responses non-sensitive; private founder summary now requires Auth0 RS256 verification and exact configured subject allowlist |
 | Public interactive API docs | Medium | `/docs` and `/redoc` enabled | Disable or protect in production configuration |
 | No DB row-level security | High | Migration contains tables, no RLS policies found | Add tenant policies, least-privilege roles, cross-tenant negative tests |
 | Public tracked Wrangler cache | Medium | `.wrangler/cache` metadata tracked | Remove cache files from index in reviewed commit; never publish credentials |
@@ -27,4 +27,4 @@
 
 No child-face biometrics; no customer asset intake until consent, purpose limitation, secure storage, authorized access, retention, deletion, backup treatment, and processor terms are implemented. Legal requirements depend on jurisdiction and require qualified counsel. Technical controls do not constitute legal approval.
 
-**Branch update:** API docs/OpenAPI are now disabled when `ASMA_ENV=production`; CORS allowlist rejects `*`. These changes do not add API authentication; no private/business operation should be exposed until Auth0 verification and authorization are wired.
+**Branch update:** API docs/OpenAPI are disabled when `ASMA_ENV=production`; CORS allowlist rejects `*`; `/api/founder/summary` fails closed unless Auth0 domain, audience, token and founder-subject allowlist are configured. The summary returns NOT_CONFIGURED for business data. This does not authenticate public health/gate reads or provide customer/tenant operations. Private functionality remains unavailable pending database/policy integration.
