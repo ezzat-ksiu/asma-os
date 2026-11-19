@@ -33,7 +33,8 @@ def test_api_health():
     res = client.get("/api/health")
     assert res.status_code == 200
     json_data = res.json()
-    assert json_data["status"] == "online"
+    assert json_data["status"] == "unknown"
+    assert json_data["readiness"] == "NOT_CONFIGURED"
     assert json_data["gates_total"] == 7
     print("\n✅ API Health Check Endpoint Verified!")
 

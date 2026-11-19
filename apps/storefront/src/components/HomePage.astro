@@ -1,0 +1,37 @@
+---
+const { locale = 'ar' } = Astro.props;
+const arabic = locale === 'ar';
+const copy = arabic
+  ? { title: 'حكايات عائلية تُروى وتُحفظ', intro: 'فوليڤير مشروع تجريبي لاستكشاف كتب عائلية تجمع الذكريات والقصص في تجربة تحريرية هادئة.', demo: 'المعروض هنا تصور تجريبي؛ لا يمثل عميلاً أو منتجاً تم شحنه.', about: 'كيف تعمل الفكرة', portfolio: 'نماذج توضيحية', notReady: 'الطلبات غير متاحة حالياً. لا تُرسل صوراً أو بيانات شخصية عبر هذا الموقع.', sampleTitle: 'حكاية بيتنا', sampleText: 'نموذج خيالي يوضح كيف يمكن ترتيب حكاية عائلية، دون استخدام بيانات أشخاص حقيقيين.' }
+  : { title: 'Family stories, made to be kept', intro: 'Foliavere is a concept for thoughtfully edited family books that bring memories and stories together.', demo: 'This is a concept demonstration. It does not represent a customer or a product that has shipped.', about: 'How the concept works', portfolio: 'Illustrative sample', notReady: 'Orders are not available. Do not submit photographs or personal information through this site.', sampleTitle: 'The story of our home', sampleText: 'A fictional sample showing how a family story could be arranged, with no real people’s data.' };
+---
+<section class="hero" lang={locale} dir={arabic ? 'rtl' : 'ltr'}>
+  <p class="eyebrow">{arabic ? 'مشروع تجريبي · FOLIAVERE' : 'CONCEPT PROJECT · FOLIAVERE'}</p>
+  <h2>{copy.title}</h2>
+  <p class="lead">{copy.intro}</p>
+  <p class="notice" role="note">{copy.demo}</p>
+  <a class="button" href={arabic ? '/ar/how-it-works/' : '/en/how-it-works/'}>{copy.about}</a>
+</section>
+<section class="sample" lang={locale} dir={arabic ? 'rtl' : 'ltr'} aria-labelledby="sample-title">
+  <p class="eyebrow">{copy.portfolio}</p>
+  <article class="sample-card">
+    <div class="sample-mark" aria-hidden="true">F</div>
+    <div><h3 id="sample-title">{copy.sampleTitle}</h3><p>{copy.sampleText}</p></div>
+  </article>
+  <p class="not-ready">{copy.notReady}</p>
+</section>
+<style>
+  .hero { text-align:center; padding:clamp(2rem,7vw,6rem) 1rem 3rem; }
+  .hero h2 { max-width:18ch; margin:0 auto 1.25rem; font-size:clamp(2.2rem,6vw,4.5rem); line-height:1.2; }
+  .eyebrow { color:var(--fv-color-bronze-text); font:600 .8rem/1.5 var(--fv-font-mono); letter-spacing:.12em; }
+  .lead { max-width:42rem; margin:0 auto 1.5rem; color:var(--fv-text-muted); font-size:1.2rem; }
+  .notice,.not-ready { max-width:42rem; margin:1rem auto 2rem; }
+  .button { display:inline-flex; min-height:44px; align-items:center; padding:.7rem 1rem; border-radius:var(--fv-radius-md); background:var(--fv-color-ink); color:var(--fv-color-ivory); text-decoration:none; }
+  .button:focus-visible { outline:3px solid var(--fv-focus); outline-offset:3px; }
+  .sample { max-width:52rem; margin:0 auto 3rem; }
+  .sample-card { display:flex; gap:1.5rem; align-items:center; padding:2rem; background:var(--fv-surface); border:1px solid var(--fv-border); border-radius:var(--fv-radius-lg); }
+  .sample-card h3 { margin-top:0; }
+  .sample-mark { display:grid; flex:none; place-items:center; width:5rem; aspect-ratio:3/4; color:var(--fv-color-ivory); background:var(--fv-color-forest); border-inline-start:4px solid var(--fv-color-gold); font:2rem var(--fv-font-display); }
+  .not-ready { color:var(--fv-color-danger); font-weight:600; }
+  @media(max-width:36rem){.sample{margin-inline:1rem}.sample-card{align-items:flex-start;padding:1rem;gap:1rem}.sample-mark{width:3.5rem}}
+</style>

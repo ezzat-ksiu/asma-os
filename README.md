@@ -1,21 +1,38 @@
-# LUMEYRA (??????) — ASMA-OS V6.0 Enterprise Engine
+# FOLIAVERE / ASMA-OS
 
-Autonomous AI-driven luxury family print & digital platform operating 45 specialized agents across 15 departments under a single Human Founder.
+FOLIAVERE is the provisional customer-facing working name in the approved brand system. Trademark and domain clearance have not been established. FOLIOMIND remains an unconfirmed project label. ASMA-OS is the internal software platform name.
 
-## Brand Identity & Color Tokens
-- **Obsidian**: `#171713` (Primary Text & Deep Luxury Backgrounds)
-- **Antique Gold**: `#C7A76C` (Accent Accents & Luxury Foiling)
-- **Ivory**: `#F5EBDD` (Archival Paper Canvas)
-- **Forest**: `#343D38` (Secondary Neutral)
-- **Cocoa**: `#765D4C` (Warm Heritage Accent)
+## Current status
 
-## Standard Product Tier Pricing (Decimal Financial Math)
-- **Heirloom (?????)**: $199.00 (COGS: $46.15 | Net Profit: $152.85)
-- **Atelier (???????)**: $399.00 (COGS: $56.15 | Net Profit: $342.85)
-- **Grand Atelier (?????)**: $649.00 (COGS: $68.95 | Net Profit: $580.05)
+This repository contains approved research and strategy documents, local core modules, provider adapter scaffolds, an Astro concept storefront, a React founder-console demo, and a FastAPI local API. It is not a verified production service or commercial launch.
 
-## Production API Endpoints
-- **Root**: `https://asma-os.vercel.app/`
-- **Swagger Interactive Docs**: `https://asma-os.vercel.app/docs`
-- **Health Verification**: `https://asma-os.vercel.app/api/health`
-- **Operational Gates Status**: `https://asma-os.vercel.app/api/gates`
+The current storefront is a concept demonstration only. There is no checkout, customer upload, production book fulfillment, or authenticated founder operations system. The API reports gate evidence as pending until real checks and artifacts are integrated. Payment initiation is disabled.
+
+## Local development
+
+Requirements observed: Python 3.12, Node.js 24, npm 11, Git. A local `.venv` already exists.
+
+```powershell
+.venv\Scripts\python.exe -m pip install -r requirements.txt
+.venv\Scripts\python.exe -m pytest -v
+
+Push-Location apps\storefront
+npm ci
+npm run build
+Pop-Location
+
+Push-Location apps\founder-screen
+npm ci
+npm run build
+Pop-Location
+```
+
+See [INSTALL_AND_VERIFY.md](INSTALL_AND_VERIFY.md), [MASTER_PROJECT_STATUS.md](MASTER_PROJECT_STATUS.md), and [docs/README.md](docs/README.md).
+
+## Security and launch boundaries
+
+- Never place credentials in source or commit `.env` files.
+- Historical repository history contained a `.env`; owners must privately review and rotate any real credentials.
+- No live payment, customer communication, supplier order, public deployment, or legal approval is established.
+- Do not use estimates or synthetic portfolio examples as actual supplier quotes or customer results.
+- Do not report a gate as passed without auditable verification evidence.

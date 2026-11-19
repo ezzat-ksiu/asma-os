@@ -1,58 +1,107 @@
-﻿# -*- coding: utf-8 -*-
+"""ASMA-OS API with evidence-based status and disabled transaction boundaries."""
+
+from __future__ import annotations
+
 import os
-from decimal import Decimal
-from fastapi import FastAPI, HTTPException, Depends
+from typing import Any
+
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Dict, Any, List, Optional
+
+from spec_schema import ASMASpec, GateStatus
+
 
 app = FastAPI(
-    title="LUMEYRA ASMA-OS V6.0 Enterprise API",
-    description="Autonomous AI-driven luxury family print platform operating 45 specialized agents across 15 departments.",
+    title="ASMA-OS API",
+    description="Local development API. Operational capabilities are reported only when evidence is configured.",
     version="6.0.0",
-    docs_url="/docs",
-    redoc_url="/redoc"
+    docs_url=None if os.getenv("ASMA_ENV", "").lower() == "production" else "/docs",
+    redoc_url=None if os.getenv("ASMA_ENV", "").lower() == "production" else "/redoc",
+    openapi_url=None if os.getenv("ASMA_ENV", "").lower() == "production" else "/openapi.json",
 )
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# No browser origins are trusted by default. Configure an explicit comma-separated
+# allowlist for a deployment; credentials are never combined with wildcard CORS.
+def _parse_allowed_origins(value: str) -> list[str]:
+    origins = [origin.strip() for origin in value.split(",") if origin.strip()]
+    if "*" in origins:
+        raise RuntimeError("ASMA_CORS_ALLOWED_ORIGINS must not contain a wildcard")
+    return origins
+
+
+allowed_origins = _parse_allowed_origins(os.getenv("ASMA_CORS_ALLOWED_ORIGINS", ""))
+if allowed_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=allowed_origins,
+        allow_credentials=True,
+        allow_methods=["GET", "POST"],
+        allow_headers=["Authorization", "Content-Type", "Idempotency-Key"],
+    )
+
+# Gate status is deliberately not inferred from scaffold presence or test count.
+# A gate remains PENDING until an evidence-backed evaluator is connected.
+_spec = ASMASpec()
+
+
+def _gate_payload() -> list[dict[str, Any]]:
+    return [
+        {
+            "id": gate_id,
+            "name": gate.name,
+            "description": gate.description,
+            "criteria": gate.criteria,
+            "status": gate.status.value if isinstance(gate.status, GateStatus) else gate.status,
+            "evidence": [],
+        }
+        for gate_id, gate in _spec.business.operational_gates.gates.items()
+    ]
+
 
 @app.get("/")
-def read_root():
+def read_root() -> dict[str, str]:
     return {
-        "status": "online",
-        "brand": "LUMEYRA",
-        "system": "ASMA-OS V6.0 Engine",
-        "docs": "/docs",
+        "status": "available",
+        "brand": "FOLIAVERE (provisional; clearance pending)",
+        "system": "ASMA-OS",
         "health": "/api/health",
-        "gates": "/api/gates"
+        "gates": "/api/gates",
     }
+
 
 @app.get("/health")
 @app.get("/api/health")
-def health_check():
+def health_check() -> dict[str, Any]:
+    gates = _gate_payload()
     return {
-        "status": "healthy",
+        "status": "unknown",
+        "readiness": "NOT_CONFIGURED",
         "version": "6.0.0",
-        "brand": "LUMEYRA",
-        "architecture": "Zero-Trust Agent Mesh"
+        "brand": "FOLIAVERE (provisional; clearance pending)",
+        "gates_total": len(gates),
+        "gates_passed": sum(gate["status"] == "PASSED" for gate in gates),
+        "components": {"database": "NOT_CONFIGURED", "providers": "NOT_CONFIGURED"},
     }
 
+
 @app.get("/api/gates")
-def get_gates():
-    return {
-        "gates": [
-            {"id": "G0", "name": "Brand Identity & Product Specs", "status": "PASSED"},
-            {"id": "G1", "name": "45 Agent System Prompts", "status": "PASSED"},
-            {"id": "G2", "name": "Data Security & 24h Purge Policy", "status": "PASSED"},
-            {"id": "G3", "name": "Zero-Cost Accounting Math (Decimal)", "status": "PASSED"},
-            {"id": "G4", "name": "Print & Typst PDF Fulfillment", "status": "PASSED"},
-            {"id": "G5", "name": "Cloudflare & Vercel Live Deploy", "status": "PASSED"},
-            {"id": "G6", "name": "E2E Test Suite Validation", "status": "PASSED"}
-        ]
-    }
+def get_gates() -> dict[str, Any]:
+    return {"gates": _gate_payload()}
+
+
+@app.post("/api/payments/paymob/initiate", status_code=503)
+def disabled_payment_initiation() -> None:
+    """Fail closed until payment credentials and an approved checkout exist."""
+    raise HTTPException(
+        status_code=503,
+        detail="Payment initiation is not configured. No transaction was attempted.",
+    )
+
+
+@app.post("/api/documents/invoice", status_code=503)
+def disabled_invoice_generation() -> None:
+    """Do not issue financial documents without a verified order and ledger."""
+    raise HTTPException(
+        status_code=503,
+        detail="Invoice generation is not configured. No financial document was issued.",
+    )

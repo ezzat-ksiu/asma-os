@@ -12,18 +12,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements.txt
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: |
+            apps/storefront/package-lock.json
+            apps/founder-screen/package-lock.json
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt pytest
 
-      - name: Run E2E Gate Tests
+      - name: Run Python tests
         env:
           PYTHONPATH: .
         run: |
-          python -m pytest test_e2e_gates.py -v
+          python -m pytest -v
+
+      - name: Build storefront
+        working-directory: apps/storefront
+        run: |
+          npm ci
+          npm run build
+
+      - name: Build founder console
+        working-directory: apps/founder-screen
+        run: |
+          npm ci
+          npm run build

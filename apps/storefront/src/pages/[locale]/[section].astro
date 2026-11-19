@@ -1,0 +1,23 @@
+---
+import BrandLayout from '../../layouts/BrandLayout.astro';
+import { pages } from '../../content/websitePages.js';
+
+export function getStaticPaths() {
+  return Object.keys(pages).flatMap((section) => ['ar', 'en'].map((locale) => ({
+    params: { locale, section },
+    props: { locale, section, title: pages[section][locale][0], body: pages[section][locale][1] },
+  })));
+}
+
+const { locale, title, body } = Astro.props;
+const arabic = locale === 'ar';
+---
+<BrandLayout locale={locale} title={`${title} — FOLIAVERE`}>
+  <main class="page" lang={locale} dir={arabic ? 'rtl' : 'ltr'}>
+    <p class="eyebrow">{arabic ? 'مشروع تجريبي' : 'Concept project'}</p>
+    <h2>{title}</h2>
+    <p class="notice">{body}</p>
+    <a href={arabic ? '/ar/' : '/en/'}>{arabic ? 'العودة للرئيسية' : 'Return home'}</a>
+  </main>
+</BrandLayout>
+<style>.page{max-width:48rem;margin:auto;padding:clamp(2rem,7vw,5rem) 1rem;min-height:55vh}.page h2{font-size:clamp(2rem,5vw,3.4rem)}.notice{padding:1rem 1.25rem;background:var(--fv-surface);border:1px solid var(--fv-border);border-radius:var(--fv-radius-md);line-height:1.8;margin-block:2rem}</style>

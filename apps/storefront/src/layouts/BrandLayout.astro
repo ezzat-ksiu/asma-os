@@ -1,49 +1,69 @@
 ﻿---
-const { title = "LUMEYRA (لوميرا) — كتب السلالات والذكريات العائلية الفاخرة" } = Astro.props;
+import '../styles/tokens.css';
+import '../styles/global.css';
+const { title = 'FOLIAVERE — حكايات عائلية تُروى وتُحفظ', locale = 'ar' } = Astro.props;
+const arabic = locale === 'ar';
 ---
-<html lang="ar" dir="rtl">
+<html lang={locale} dir={arabic ? 'rtl' : 'ltr'}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Marcellus&display=swap" rel="stylesheet">
+    <meta name="description" content="FOLIAVERE مشروع تجريبي لكتب عائلية مصممة بعناية. لا تتوفر الطلبات حالياً." />
+    <meta name="theme-color" content="#171713" />
     <title>{title}</title>
     <style>
-      body {
-        background-color: #171713;
-        color: #F5EBDD;
-        font-family: 'Amiri', serif;
-        margin: 0;
-        padding: 0;
-      }
       .header {
-        background-color: #343D38;
-        padding: 30px;
+        background-color: var(--fv-color-forest);
+        padding: var(--fv-space-6);
         text-align: center;
-        border-bottom: 2px solid #C7A76C;
+        border-bottom: 2px solid var(--fv-color-gold);
       }
       .brand-title {
-        color: #C7A76C;
-        font-family: 'Marcellus', serif;
-        font-size: 3.5rem;
+        color: var(--fv-color-gold);
+        font-family: var(--fv-font-display);
+        font-size: clamp(2rem, 5vw, 3.5rem);
         margin: 0;
-        letter-spacing: 4px;
+        letter-spacing: .12em;
       }
       .container {
-        max-width: 900px;
-        margin: 40px auto;
-        padding: 20px;
-        text-align: center;
+        max-width: var(--fv-content-width);
+        margin: var(--fv-space-10) auto;
+        padding: var(--fv-space-6);
       }
+      .locale-nav { display:flex; gap:1rem; justify-content:center; margin-top:1rem; }
+      .locale-nav a { color:var(--fv-color-ivory); }
+      .site-nav { display:flex; flex-wrap:wrap; justify-content:center; gap:.8rem 1.2rem; padding:1rem; border-bottom:1px solid var(--fv-border); }
+      .site-nav a { color:var(--fv-link); }
+      .site-footer { display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; padding:1.5rem; border-top:1px solid var(--fv-border); font-size:.875rem; }
+      .site-footer span { flex-basis:100%; text-align:center; color:var(--fv-text-muted); }
+      .notice { border:1px solid var(--fv-border); border-radius:var(--fv-radius-md); padding:1rem; background:var(--fv-surface); color:var(--fv-text); }
     </style>
   </head>
   <body>
     <div class="header">
-      <h1 class="brand-title">LUMEYRA</h1>
+      <a href="/" aria-label="Foliavere home"><h1 class="brand-title">FOLIAVERE</h1></a>
+      <nav class="locale-nav" aria-label="Language">
+        <a href="/ar/" lang="ar" hreflang="ar">العربية</a>
+        <a href="/en/" lang="en" hreflang="en">English</a>
+      </nav>
     </div>
+    <nav class="site-nav" aria-label={arabic ? 'التنقل الرئيسي' : 'Main navigation'}>
+      <a href={arabic ? '/ar/' : '/en/'}>{arabic ? 'الرئيسية' : 'Home'}</a>
+      <a href={arabic ? '/ar/editions/' : '/en/editions/'}>{arabic ? 'الإصدارات' : 'Editions'}</a>
+      <a href={arabic ? '/ar/portfolio/' : '/en/portfolio/'}>{arabic ? 'نماذج' : 'Portfolio'}</a>
+      <a href={arabic ? '/ar/how-it-works/' : '/en/how-it-works/'}>{arabic ? 'كيف تعمل الفكرة' : 'How it works'}</a>
+      <a href={arabic ? '/ar/trust/' : '/en/trust/'}>{arabic ? 'الثقة والجودة' : 'Trust'}</a>
+      <a href={arabic ? '/ar/faq/' : '/en/faq/'}>FAQ</a>
+      <a href={arabic ? '/ar/contact/' : '/en/contact/'}>{arabic ? 'التواصل' : 'Contact'}</a>
+    </nav>
     <div class="container">
       <slot />
     </div>
+    <footer class="site-footer">
+      <a href={arabic ? '/ar/privacy/' : '/en/privacy/'}>{arabic ? 'مسودة الخصوصية' : 'Privacy draft'}</a>
+      <a href={arabic ? '/ar/terms/' : '/en/terms/'}>{arabic ? 'مسودة الشروط' : 'Terms draft'}</a>
+      <a href={arabic ? '/ar/returns/' : '/en/returns/'}>{arabic ? 'مسودة الإرجاع' : 'Returns draft'}</a>
+      <span>{arabic ? 'هوية عمل مؤقتة؛ الطلبات غير متاحة.' : 'Provisional working identity; orders unavailable.'}</span>
+    </footer>
   </body>
 </html>
