@@ -1,3 +1,4 @@
+ï»¿# -*- coding: utf-8 -*-
 """
 LUMEYRA ASMA-OS V6.0 Founder Local Command Line Tool
 """
@@ -13,7 +14,7 @@ def run_cmd(cmd):
 
 def main():
     print("=" * 60)
-    print("      LUMEYRA ASMA-OS V6.0 — FOUNDER CONTROL PANEL")
+    print("      LUMEYRA ASMA-OS V6.0 - FOUNDER CONTROL PANEL")
     print("=" * 60)
     print("1. Run E2E Gate Tests (Pytest)")
     print("2. Generate 30 SEO Articles")

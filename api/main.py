@@ -1,3 +1,4 @@
+ï»¿# -*- coding: utf-8 -*-
 import os
 from decimal import Decimal
 from fastapi import FastAPI, HTTPException, Depends
@@ -6,8 +7,8 @@ from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 
 app = FastAPI(
-    title="LUMEYRA (??????) — ASMA-OS V6.0 Enterprise API",
-    description="Autonomous AI-driven luxury family print & digital platform operating 45 specialized agents across 15 departments under a single Human Founder.",
+    title="LUMEYRA ASMA-OS V6.0 Enterprise API",
+    description="Autonomous AI-driven luxury family print platform operating 45 specialized agents across 15 departments.",
     version="6.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
@@ -25,7 +26,7 @@ app.add_middleware(
 def read_root():
     return {
         "status": "online",
-        "brand": "LUMEYRA (??????)",
+        "brand": "LUMEYRA",
         "system": "ASMA-OS V6.0 Engine",
         "docs": "/docs",
         "health": "/api/health",
